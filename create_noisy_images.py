@@ -22,17 +22,15 @@ def add_gaussian_noise(image, mean=0, var=0.1):
     noisy = np.clip(noisy, 0, 255)  # To limit pixel values between 0 and 255
     return noisy.astype('uint8')
 
-
 image_bw = cv2.imread('images/dog.jpg', cv2.IMREAD_GRAYSCALE)
 
 # Add speckle noise
 noisy_image_speckle_bw = add_speckle_noise_bw(image_bw)
-cv2.imwrite('images/speckle_noisy_image.jpg', noisy_image_speckle_bw)
+cv2.imwrite('images/speckle_noise.jpg', noisy_image_speckle_bw)
 
 # Add Gaussian noise
 noisy_image_gaussian = add_gaussian_noise(image_bw)
-cv2.imwrite('images/gaussian_noisy_image.jpg', noisy_image_gaussian)
-
+cv2.imwrite('images/gaussian_noise.jpg', noisy_image_gaussian)
 
 # # Display or save the noisy image
 # cv2.imshow('Speckle Noise Image', noisy_image)

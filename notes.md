@@ -6,7 +6,7 @@ noise:
 
 Pratiksha:
 - gauss
-- speckle
+- speckle (might skip)
 use wavelet transform to denoise the image, use perona malik
 
 Methods to eval:
