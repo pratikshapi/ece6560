@@ -101,3 +101,68 @@ pyp.show()
 
 
 
+
+
+# plot_pm_bkp
+import numpy as np
+import matplotlib.pyplot as plt
+import cv2
+from denoise_pm import anisodiff_f1, anisodiff_f2, F1, F2
+
+def apply_anisodiff_functions(img, steps):
+    K_values = [0.1, 0.5, 1, 2]
+    diffused_images_f1 = [anisodiff_f1(img, steps, K) for K in K_values]
+    diffused_images_f2 = [anisodiff_f2(img, steps, K) for K in K_values]
+    return diffused_images_f1, diffused_images_f2
+
+def plot_diffusion_vs_gradient():
+    K_values = np.linspace(0.1, 2, 100)  # More refined range of K values
+    image_gradient = np.linspace(-7, 7, 100)  # Simulated image gradient range
+
+    F1_results = [F1(dt, K) for K in K_values for dt in image_gradient]
+    F2_results = [F2(dt, K) for K in K_values for dt in image_gradient]
+
+    plt.figure(figsize=(10, 5))
+
+    # Plot for F1
+    plt.subplot(1, 2, 1)
+    plt.title('F1: Diffusion vs Gradient')
+    plt.imshow(np.reshape(F1_results, (100, 100)), extent=[-7, 7, 0.1, 2], aspect='auto')
+    plt.xlabel('Image Gradient')
+    plt.ylabel('K value')
+    plt.colorbar()
+
+    # Plot for F2
+    plt.subplot(1, 2, 2)
+    plt.title('F2: Diffusion vs Gradient')
+    plt.imshow(np.reshape(F2_results, (100, 100)), extent=[-7, 7, 0.1, 2], aspect='auto')
+    plt.xlabel('Image Gradient')
+    plt.ylabel('K value')
+    plt.colorbar()
+
+    plt.tight_layout()
+    plt.show()
+
+def plot_diffusion_vs_gradient_line(F, K_values, max_gradient=10):
+    image_gradients = np.linspace(0, max_gradient, 100)
+    plt.figure()
+
+    for K in K_values:
+        diffusion = F(image_gradients, K)
+        plt.plot(image_gradients, diffusion, label=f'K = {K}')
+
+    plt.title(f'Effect on diffusion by changing K (given by equation {3 if F == F1 else 4})')
+    plt.xlabel('Image Gradient')
+    plt.ylabel('Diffusion')
+    plt.legend()
+    plt.grid(True)
+    plt.show()
+
+# Example usage:
+K_values = [0.1, 0.5, 1, 2]
+
+# Example usage:
+img = cv2.imread('images/gaussian_noise.jpg', cv2.IMREAD_GRAYSCALE)  
+f1_images, f2_images = apply_anisodiff_functions(img, steps=10)
+plot_diffusion_vs_gradient(F1, K_values)  # For equation 3
+plot_diffusion_vs_gradient(F2, K_values)  # For equation 4
