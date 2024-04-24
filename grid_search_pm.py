@@ -16,12 +16,12 @@ def optimize_pmf_parameters(noisy_image_path, original_image_path, K_values, ste
             current_mse = mse(original_image, denoised_image)
             if current_psnr > best_psnr: # and current_mse < best_mse:
                 best_psnr, best_mse = current_psnr, current_mse
-                best_K, best_steps = K, steps
+                best_K, best_steps = K, steps 
     
     return best_K, best_steps, best_psnr, best_mse
 
 # Example K_values and step_counts for grid search
-K_values = [0.5, 1, 2, 3, 4]
+K_values = [0.01, 0.02, 0.05, 0.1, 0.2, 0.5 , 1, 2, 3, 4]
 step_counts = [5, 10, 50, 100, 150, 200]
 
 # Run the optimization
